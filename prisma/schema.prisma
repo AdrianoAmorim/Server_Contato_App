@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model categoria {
+  id                                   Int       @id @default(autoincrement())
+  nome                                 String
+  contato_contato_categoriaTocategoria contato[] @relation("contato_categoriaTocategoria")
+}
+
+model contato {
+  id                                     Int       @id @default(autoincrement())
+  nome                                   String
+  sobrenome                              String
+  celular                                String
+  fixo                                   String?
+  email                                  String?
+  site                                   String?
+  categoria                              Int
+  categoria_contato_categoriaTocategoria categoria @relation("contato_categoriaTocategoria", fields: [categoria], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}

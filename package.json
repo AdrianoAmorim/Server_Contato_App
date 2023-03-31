@@ -1,0 +1,27 @@
+{
+  "name": "server_contato_app",
+  "version": "1.0.0",
+  "description": "Servidor para o app Contato",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdrianoAmorim/Server_Contato_App.git"
+  },
+  "author": "Adriano Amorim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdrianoAmorim/Server_Contato_App/issues"
+  },
+  "homepage": "https://github.com/AdrianoAmorim/Server_Contato_App#readme",
+  "devDependencies": {
+    "prisma": "^4.12.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.12.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
