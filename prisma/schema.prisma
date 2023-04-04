@@ -8,19 +8,19 @@ datasource db {
 }
 
 model categoria {
-  id                                   Int       @id @default(autoincrement())
-  nome                                 String
-  contato_contato_categoriaTocategoria contato[] @relation("contato_categoriaTocategoria")
+  id      Int       @id @default(autoincrement())
+  nome    String
+  contato contato[]
 }
 
 model contato {
-  id                                     Int       @id @default(autoincrement())
-  nome                                   String
-  sobrenome                              String
-  celular                                String
-  fixo                                   String?
-  email                                  String?
-  site                                   String?
-  categoria                              Int
-  categoria_contato_categoriaTocategoria categoria @relation("contato_categoriaTocategoria", fields: [categoria], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           Int       @id @default(autoincrement())
+  nome         String
+  sobrenome    String?
+  celular      String
+  fixo         String?
+  email        String?
+  site         String?
+  id_categoria Int
+  categoria    categoria @relation(fields: [id_categoria], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
