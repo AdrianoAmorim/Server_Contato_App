@@ -104,7 +104,7 @@ app.post("/cadCategoria", async (req, res) => {
   }
 });
 
-//BUSCA CONTATOS QUE CONTENHAM O VALOR RETORNADOPELO FRONT
+//BUSCA CONTATOS QUE CONTENHAM O VALOR RETORNADO PELO FRONT
 app.get("/contatos/find",async (req,res)=>{
 const nome = req.query.nome
   try {
