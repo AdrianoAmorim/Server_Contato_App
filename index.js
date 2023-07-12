@@ -61,11 +61,12 @@ app.post("/cadContato", async (req, res) => {
 
 //CADASTRA UMA NOVA CATEGORIA
 app.post("/cadCategoria", async (req, res) => {
-  const categoria = req.body;
+  const {categoria} = req.body;
+  console.log(categoria)
   try {
     const response = await prisma.categoria.create({
       data: {
-        nome: categoria.nome,
+        nome: categoria,
       },
       select: {
         id: true,
@@ -102,6 +103,62 @@ app.post("/cadCategoria", async (req, res) => {
     }
   }
 });
+
+//BUSCA CONTATOS QUE CONTENHAM O VALOR RETORNADOPELO FRONT
+app.get("/contatos/find",async (req,res)=>{
+const nome = req.query.nome
+  try {
+    const response = await prisma.contato.findMany({
+      where:{
+        nome:{
+          startsWith: nome
+        }
+      },
+      select:{
+        id:true,
+        nome:true
+      },
+      orderBy:{
+        nome:'asc'
+      }
+    })
+    if (response.length > 0) {
+      return res.status(200).json(response);
+    } else {
+      return res
+        .status(200)
+        .json({ aviso: true, msg: "Ops! Não Encontramos nenhum Contato." });
+    }
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientValidationError) {
+      return res.status(500).json({
+        error: true,
+        msg: "Error de Sintaxe na Requisição do Servidor!",
+      });
+    }
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return res.status(500).json({
+        error: true,
+        msg: "Erro de Violação de Restrições",
+        code: error.code,
+      });
+    }
+    if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+      return res
+        .status(500)
+        .json({ error: true, msg: "Error Desconhecido no Servidor!" });
+    }
+    if (error instanceof Prisma.PrismaClientInitializationError) {
+      return res.status(500).json({
+        error: true,
+        msg: "Erro na Inicialização da Conexão com o BD!",
+        code: error.errorCode,
+      });
+    } else {
+      return res.status(400).json({ error: true, msg: "Error no servidor!" });
+    }
+  }
+})
 
 //BUSCA UM CONTATO PELO ID DELE
 app.get("/contato/:id", async (req, res) => {
@@ -172,12 +229,12 @@ app.get("/contatos", async (req, res) => {
       },
     });
 
-    if (response[0]?.id) {
+    if (response.length > 0) {
       return res.status(200).json(response);
     } else {
       return res
-        .status(404)
-        .json({ error: true, msg: "Ops! Nenhum Contato Cadastrado!" });
+        .status(200)
+        .json({ aviso: true, msg: "Ops! Nenhum Contato Cadastrado. Cadastre um novo Contato!" });
     }
   } catch (error) {
     if (error instanceof Prisma.PrismaClientValidationError) {
@@ -218,13 +275,13 @@ app.get("/categorias", async (req, res) => {
         nome: "asc",
       },
     });
-
-    if (response[0].id > 0) {
+    
+    if (response.length > 0) {
       return res.status(200).json(response);
     } else {
       return res
         .status(200)
-        .json({ aviso: true, msg: "Ops! Nenhuma Categoria Cadastrado!" });
+        .json({ aviso: true, msg: "Ops! Nenhuma categoria Cadastrada. Você sera Redirecionado!" });
     }
   } catch (error) {
     if (error instanceof Prisma.PrismaClientValidationError) {
